@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: 'main'
           fetch-depth: 0
@@ -27,5 +27,5 @@ jobs:
           git merge upstream/main --allow-unrelated-histories --no-edit || exit 1
       - name: Push changes
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.OPENWRT_WORKFLOW_TOKEN }}
         run: git push
