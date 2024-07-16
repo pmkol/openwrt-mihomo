@@ -15,6 +15,7 @@ jobs:
         with:
           ref: 'main'
           fetch-depth: 0
+          token: ${{ secrets.OPENWRT_WORKFLOW_TOKEN }}
 
       - name: Configure Git
         run: |
@@ -26,6 +27,4 @@ jobs:
           git fetch upstream
           git merge upstream/main --allow-unrelated-histories --no-edit || exit 1
       - name: Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.OPENWRT_WORKFLOW_TOKEN }}
         run: git push
