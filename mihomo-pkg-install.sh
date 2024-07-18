@@ -53,7 +53,6 @@ done
 for package_name in "${pkg_name[@]}"; do
     latest_version=$(grep " ${package_name}_" /tmp/packages.sha256sum | cut -d '_' -f 2)
     local_version=$(opkg list-installed | grep "^${package_name} " | cut -d ' ' -f 3)
-
     if [ "${latest_version}" = "${local_version}" ]; then
         echo "${package_name} ${local_version} is already installed."
     else
@@ -65,7 +64,8 @@ for package_name in "${pkg_name[@]}"; do
         [ "$latest_sha256" != "$local_sha256" ] && { echo "error: SHA-256 checksum does not match for ${package_name}_${latest_version}_${pkg_target}.ipk."; exit 1; }
         opkg install "/tmp/${package_name}_${latest_version}_${pkg_target}.ipk"
         rm "/tmp/${package_name}_${latest_version}_${pkg_target}.ipk"
-        echo "${package_name} ${local_version} is now successfully installed."
+        new_version=$(opkg list-installed | grep "^${package_name} " | cut -d ' ' -f 3)
+        echo "${package_name} ${new_version} is now successfully installed."
     fi
 done
 
