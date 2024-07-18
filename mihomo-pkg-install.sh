@@ -27,9 +27,11 @@ major_version=$(grep 'DISTRIB_RELEASE=' /etc/openwrt_release | sed -E "s/.*'([0-
 case $(uname -m) in
     x86_64)
         system_target=x86_64
+        pkg_target=x86_64
         ;;
     aarch64)
         system_target=aarch64_generic
+        pkg_target=aarch64_generic
         ;;
     *)
         echo "error: $(uname -m) target not supported."
@@ -55,13 +57,14 @@ for package_name in "${pkg_name[@]}"; do
     if [ "${latest_version}" = "${local_version}" ]; then
         echo "${package_name} ${local_version} is already installed."
     else
-        curl -Ls "${git_path}/releases/download/${system_target}/${package_name}_${latest_version}_${system_target}.ipk" > "/tmp/${package_name}_${latest_version}_${system_target}.ipk"
-        [ ! -f "/tmp/${package_name}_${latest_version}_${system_target}.ipk" ] && { echo "error: failed to download ${package_name}_${latest_version}_${system_target}.ipk."; exit 1; }
+        [ "$(grep " ${package_name}_" /tmp/packages.sha256sum | cut -d '_' -f 3)" = "all.ipk" ] && pkg_target="all"
+        curl -Ls "${git_path}/releases/download/${system_target}/${package_name}_${latest_version}_${pkg_target}.ipk" > "/tmp/${package_name}_${latest_version}_${pkg_target}.ipk"
+        [ ! -f "/tmp/${package_name}_${latest_version}_${pkg_target}.ipk" ] && { echo "error: failed to download ${package_name}_${latest_version}_${pkg_target}.ipk."; exit 1; }
         latest_sha256=$(grep " ${package_name}_" /tmp/packages.sha256sum | cut -d ' ' -f 1)
-        local_sha256=$(sha256sum /tmp/${package_name}_${latest_version}_${system_target}.ipk | cut -d ' ' -f 1)
-        [ "$latest_sha256" != "$local_sha256" ] && { echo "error: SHA-256 checksum does not match for ${package_name}_${latest_version}_${system_target}.ipk."; exit 1; }
-        opkg install "/tmp/${package_name}_${latest_version}_${system_target}.ipk"
-        rm "/tmp/${package_name}_${latest_version}_${system_target}.ipk"
+        local_sha256=$(sha256sum /tmp/${package_name}_${latest_version}_${pkg_target}.ipk | cut -d ' ' -f 1)
+        [ "$latest_sha256" != "$local_sha256" ] && { echo "error: SHA-256 checksum does not match for ${package_name}_${latest_version}_${pkg_target}.ipk."; exit 1; }
+        opkg install "/tmp/${package_name}_${latest_version}_${pkg_target}.ipk"
+        rm "/tmp/${package_name}_${latest_version}_${pkg_target}.ipk"
         echo "${package_name} ${local_version} is now successfully installed."
     fi
 done
