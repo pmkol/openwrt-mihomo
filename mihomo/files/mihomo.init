@@ -18,6 +18,10 @@ run_app_log_path="$run_dir/app.log"
 run_core_log_path="$run_dir/core.log"
 run_profile_path="$run_dir/config.yaml"
 run_ui_dir="$run_dir/ui"
+geoip_dat_path="$run_dir/GeoIP.dat"
+geoip_v2ray_path="/usr/share/v2ray/geoip.dat"
+geosite_path="$run_dir/GeoSite.dat"
+geosite_v2ray_path="/usr/share/v2ray/geosite.dat"
 mixin_path="$home_dir/mixin.yaml"
 profile_watcher="$home_dir/profile_watcher.sh"
 upnp_lease_watcher="$home_dir/upnp_lease_watcher.sh"
@@ -38,6 +42,13 @@ start_service() {
 	fi
 	log "App is enabled."
 	log "Starting..."
+	# check v2ray-geodata
+	if [ ! -f "$geoip_dat_path" ]; then
+		[ -f "$geoip_v2ray_path" ] && ln -s "$geoip_v2ray_path" "$geoip_dat_path"
+	fi
+	if [ ! -f "$geosite_path" ]; then
+		[ -f "$geosite_v2ray_path" ] && ln -s "$geosite_v2ray_path" "$geosite_path"
+	fi
 	# download profile
 	log "Download profile."
 	local profile
