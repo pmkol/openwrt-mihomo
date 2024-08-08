@@ -3,6 +3,7 @@
 'require view';
 'require uci';
 'require fs';
+'require network';
 'require rpc';
 'require poll';
 'require tools.widgets as widgets';
@@ -28,10 +29,14 @@ function listProfiles() {
 
 async function getServiceStatus() {
     try {
-        return (await callServiceList('mihomo'))['mihomo']['instances']['core']['running'];
+        return (await callServiceList('mihomo'))['mihomo']['instances']['mihomo']['running'];
     } catch (ignored) {
         return false;
     }
+}
+
+function getHostHints(){
+    return L.resolveDefault(network.getHostHints(), { hosts: {} });
 }
 
 function getAppVersion() {
@@ -93,6 +98,7 @@ return view.extend({
             getAppVersion(),
             getCoreVersion(),
             getServiceStatus(),
+            getHostHints(),
         ]);
     },
     render: function (data) {
@@ -101,6 +107,7 @@ return view.extend({
         const appVersion = data[2];
         const coreVersion = data[3];
         const running = data[4];
+        const hosts = data[5].hosts;
 
         let m, s, o, so;
 
@@ -204,17 +211,39 @@ return view.extend({
         o.depends('access_control_mode', 'allow');
         o.depends('access_control_mode', 'block');
 
+        for (const mac in hosts) {
+            const host = hosts[mac];
+            for (const ip of host.ipaddrs){
+                const hint = host.name || mac;
+                o.value(ip, hint ? '%s (%s)'.format(ip, hint) : ip);
+            }
+        }
+
         o = s.taboption('access_control', form.DynamicList, 'acl_ip6', 'IP6');
         o.datatype = 'ipmask6';
         o.retain = true;
         o.depends('access_control_mode', 'allow');
         o.depends('access_control_mode', 'block');
 
+        for (const mac in hosts) {
+            const host = hosts[mac];
+            for (const ip of host.ip6addrs){
+                const hint = host.name || mac;
+                o.value(ip, hint ? '%s (%s)'.format(ip, hint) : ip);
+            }
+        }
+
         o = s.taboption('access_control', form.DynamicList, 'acl_mac', 'MAC');
         o.datatype = 'macaddr';
         o.retain = true;
         o.depends('access_control_mode', 'allow');
         o.depends('access_control_mode', 'block');
+
+        for (const mac in hosts) {
+            const host = hosts[mac];
+            const hint = host.name || host.ipaddrs[0];
+            o.value(mac, hint ? '%s (%s)'.format(mac, hint) : mac);
+        }
 
         s.tab('bypass', _('Bypass'));
 
@@ -517,31 +546,19 @@ return view.extend({
         o.rmempty = false;
 
         o = s.taboption('sniffer', form.Flag, 'sniff_dns_mapping', _('Sniff Redir-Host'));
-        o.retain = true;
         o.rmempty = false;
-        o.depends('sniffer', '1');
 
         o = s.taboption('sniffer', form.Flag, 'sniff_pure_ip', _('Sniff Pure IP'));
-        o.retain = true;
         o.rmempty = false;
-        o.depends('sniffer', '1');
 
         o = s.taboption('sniffer', form.Flag, 'sniffer_overwrite_dest', _('Overwrite Destination'));
-        o.retain = true;
         o.rmempty = false;
-        o.depends('sniffer', '1');
 
         o = s.taboption('sniffer', form.DynamicList, 'sniffer_force_domain_name', _('Force Sniff Domain Name'));
-        o.retain = true;
-        o.depends('sniffer', '1');
 
         o = s.taboption('sniffer', form.DynamicList, 'sniffer_ignore_domain_name', _('Ignore Sniff Domain Name'));
-        o.retain = true;
-        o.depends('sniffer', '1');
 
         o = s.taboption('sniffer', form.SectionValue, '_sniffer_sniffs', form.TableSection, 'sniff', _('Sniff By Protocol'));
-        o.retain = true;
-        o.depends('sniffer', '1');
 
         o.subsection.anonymous = true;
         o.subsection.addremove = false;
@@ -596,7 +613,7 @@ return view.extend({
 
         o = s.taboption('mixin_file_content', form.TextValue, '_mixin_file_content');
         o.rows = 25;
-        o.cfgvalue = function (section_id) {
+        o.load = function (section_id) {
             return L.resolveDefault(fs.read_direct(mixinPath));
         };
         o.write = function (section_id, formvalue) {

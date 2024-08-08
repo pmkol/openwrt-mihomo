@@ -262,6 +262,9 @@ msgstr "栈"
 msgid "Device"
 msgstr "设备"
 
+msgid "MTU"
+msgstr "最大传输单元"
+
 msgid "GSO"
 msgstr "通用分段卸载"
 
@@ -393,6 +396,9 @@ msgstr "混入文件内容"
 
 msgid "Editor"
 msgstr "编辑器"
+
+msgid "File for Mixin"
+msgstr "用于混入的文件"
 
 msgid "Profile for Startup"
 msgstr "用于启动的配置文件"
