@@ -1,6 +1,7 @@
 {
     "admin/services/mihomo": {
         "title": "MihomoTProxy",
+        "order": 20,
         "action": {
             "type": "alias",
             "path": "admin/services/mihomo/config"
