@@ -258,7 +258,7 @@ start_service() {
 
 	procd_add_jail mihomo requirejail procfs
 	procd_add_jail_mount "$PROG" /etc/TZ /etc/localtime /etc/hosts /etc/ssl/certs
-	procd_add_jail_mount_rw "$RUN_DIR" "$LOG_DIR" /dev/net
+	procd_add_jail_mount_rw "$RUN_DIR" "$LOG_DIR" /dev/net /usr/share/v2ray
 	procd_set_param capabilities /etc/capabilities/mihomo.json
 	procd_set_param no_new_privs 1
 
