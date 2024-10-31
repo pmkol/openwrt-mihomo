@@ -67,6 +67,7 @@ jobs:
       - name: Download
         uses: actions/download-artifact@v4
         with:
+          pattern: mihomo_*
           merge-multiple: true
       
       - name: Uncompress
