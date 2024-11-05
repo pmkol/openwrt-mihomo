@@ -9,7 +9,7 @@ body:
       label: 自查
       description: 请按以下步骤自查，如自查后问题仍然存在，再继续提交Issue。
       options:
-        - label: OpenWrt 版本在 22.03 及以上
+        - label: OpenWrt 版本在 23.05 及以上
           required: true
         - label: Linux Kernel 版本在 5.10 及以上
           required: true
@@ -29,7 +29,7 @@ body:
           required: true
         - label: 我已经查看过Wiki，没有找到解决办法
           required: true
-        - label: 我使用的是由本仓库代码构建的插件，而不是其他Fork
+        - label: 我使用的是由此仓库代码构建的插件，而不是其他Fork
           required: true
         - label: 我使用的是最新版的插件
           required: true
@@ -75,7 +75,7 @@ body:
     id: debug
     attributes:
       label: 调试信息
-      description: 运行仓库的debug.sh，将生成debug.md贴上（请在上传前对敏感信息进行处理）
+      description: 在路由器上运行仓库里的debug.sh，将生成的debug.md上传到此处（请勿直接贴出内容，上传前请对敏感信息进行处理）
     validations:
       required: true
   - type: textarea
@@ -89,7 +89,7 @@ body:
     id: core_log
     attributes:
       label: 核心日志
-      description: 附上你的核心日志，级别至少为info，建议使用debug
+      description: 附上你的核心日志（级别至少为info，建议使用debug）
     validations:
       required: true
   - type: textarea
