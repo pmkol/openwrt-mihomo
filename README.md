@@ -33,9 +33,14 @@ curl -s -L https://mirror.ghproxy.com/https://github.com/morytyann/OpenWrt-mihom
 
 ```shell
 # you can install from shell or `Software` menu in LuCI
+# for opkg
 opkg install mihomo
 opkg install luci-app-mihomo
 opkg install luci-i18n-mihomo-zh-cn
+# for apk
+apk add --allow-untrust mihomo
+apk add --allow-untrust luci-app-mihomo
+apk add --allow-untrust luci-i18n-mihomo-zh-cn
 ```
 
 ### B. Install From Release
