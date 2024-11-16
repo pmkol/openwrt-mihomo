@@ -38,9 +38,9 @@ opkg install mihomo
 opkg install luci-app-mihomo
 opkg install luci-i18n-mihomo-zh-cn
 # for apk
-apk add --allow-untrust mihomo
-apk add --allow-untrust luci-app-mihomo
-apk add --allow-untrust luci-i18n-mihomo-zh-cn
+apk add --allow-untrusted mihomo
+apk add --allow-untrusted luci-app-mihomo
+apk add --allow-untrusted luci-i18n-mihomo-zh-cn
 ```
 
 ### B. Install From Release
