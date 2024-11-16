@@ -38,6 +38,9 @@ jobs:
           - openwrt-23.05
           - openwrt-24.10
           - SNAPSHOT
+        exclude:
+          - arch: aarch64_cortex-a76
+            branch: openwrt-23.05
 
     steps:
       - name: Checkout
