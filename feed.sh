@@ -49,7 +49,7 @@ elif [ -x "/usr/bin/apk" ]; then
 	if (grep -q mihomo /etc/apk/repositories); then
 		sed -i '/mihomo/d' /etc/apk/repositories
 	fi
-	echo "https://morytyann.github.io/OpenWrt-mihomo/$branch/$arch/mihomo/packages.adb" >> /etc/apk/repositories
+	echo "https://morytyann.github.io/OpenWrt-mihomo/$branch/$arch/mihomo/packages.adb" >> /etc/apk/repositories.d/customfeeds.list
 	# update feeds
 	echo "update feeds"
 	apk update
