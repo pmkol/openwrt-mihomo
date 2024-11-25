@@ -7,7 +7,7 @@ on:
       - v*
 
 jobs:
-  build:
+  release:
     name: ${{ matrix.arch }}-${{ matrix.branch }} release
     runs-on: ubuntu-latest
     strategy:
