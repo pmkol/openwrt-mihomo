@@ -77,5 +77,4 @@ jobs:
           commit-message: Update Mihomo Version
           title: Update Mihomo Version
           body: |
-            From: `${{ needs.get_current_info.outputs.pkg_build_version }}`
-            To: `alpha-${{ needs.get_lastest_info.outputs.short_commit_sha }}`
+            [Changelog](https://github.com/metacubex/mihomo/compare/${{ needs.get_current_info.outputs.pkg_source_version }}...${{  needs.get_lastest_info.outputs.commit_sha }})
