@@ -94,3 +94,9 @@ The ipk file will be found under `bin/packages/your_architecture/mihomo`.
 - kmod-inet-diag
 - kmod-nft-tproxy
 - kmod-tun
+
+## Special Thanks
+
+- [@pmkol](https://github.com/pmkol)
+- [@ApoisL](https://github.com/vernlau)
+- [@xishang0128](https://github.com/xishang0128)
