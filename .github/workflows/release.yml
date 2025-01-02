@@ -10,6 +10,7 @@ jobs:
   release:
     name: ${{ matrix.arch }}-${{ matrix.branch }} release
     runs-on: ubuntu-latest
+    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
@@ -53,14 +54,48 @@ jobs:
           ARCH: ${{ matrix.arch }}-${{ matrix.branch }}
           FEEDNAME: mihomo
           PACKAGES: luci-app-mihomo
+          INDEX: 1
+          KEY_BUILD: ${{ secrets.KEY_BUILD }}
           NO_REFRESH_CHECK: true
 
       - name: Compress
         run: |
           tar -c -z -f mihomo_${{ matrix.arch }}-${{ matrix.branch }}.tar.gz -C bin/packages/${{ matrix.arch }}/mihomo .
+          mkdir -p public/${{ matrix.branch }}/${{ matrix.arch }}
+          mv bin/packages/${{ matrix.arch }}/mihomo public/${{ matrix.branch }}/${{ matrix.arch }}
+          tar -c -z -f feed_mihomo_${{ matrix.arch }}-${{ matrix.branch }}.tar.gz public/${{ matrix.branch }}/${{ matrix.arch }}
 
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             mihomo_${{ matrix.arch }}-${{ matrix.branch }}.tar.gz
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: feed_mihomo_${{ matrix.arch }}-${{ matrix.branch }}
+          path: feed_mihomo_${{ matrix.arch }}-${{ matrix.branch }}.tar.gz
+
+  feed:
+    needs: release
+    name: feed
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download
+        uses: actions/download-artifact@v4
+        with:
+          pattern: feed_mihomo_*
+          merge-multiple: true
+      
+      - name: Uncompress
+        run: |
+          for file in feed_mihomo_*.tar.gz; do tar -x -z -f "$file"; done
+
+      - name: Feed
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force_orphan: true
+          commit_message: Update Feed
