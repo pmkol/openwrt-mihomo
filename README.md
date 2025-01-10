@@ -82,7 +82,7 @@ echo "src-git mihomo https://github.com/morytyann/OpenWrt-mihomo.git;main" >> "f
 make package/luci-app-mihomo/compile
 ```
 
-The ipk file will be found under `bin/packages/your_architecture/mihomo`.
+The ipk/apk file will be found under `bin/packages/your_architecture/mihomo`.
 
 ## Dependencies
 
