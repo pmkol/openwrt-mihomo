@@ -95,8 +95,11 @@ The ipk/apk file will be found under `bin/packages/your_architecture/mihomo`.
 - kmod-nft-tproxy
 - kmod-tun
 
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=morytyann/OpenWrt-mihomo)](https://github.com/morytyann/OpenWrt-mihomo/graphs/contributors)
+
 ## Special Thanks
 
-- [@pmkol](https://github.com/pmkol)
 - [@ApoisL](https://github.com/vernlau)
 - [@xishang0128](https://github.com/xishang0128)
