@@ -27,6 +27,7 @@ jobs:
   get_lastest_info:
     runs-on: ubuntu-latest
     outputs:
+      commit_date: ${{ steps.get_lastest_info.outputs.commit_date }}
       commit_sha: ${{ steps.get_lastest_info.outputs.commit_sha }}
       short_commit_sha: ${{ steps.get_lastest_info.outputs.short_commit_sha }}
       checksum: ${{ steps.get_lastest_info.outputs.checksum }}
@@ -41,6 +42,7 @@ jobs:
       - id: get_lastest_info
         name: Get Latest Info
         run: |
+          echo "commit_date=$(git -C mihomo log -n 1 --format=%cs)" >> $GITHUB_OUTPUT
           echo "commit_sha=$(git -C mihomo rev-parse HEAD)" >> $GITHUB_OUTPUT
           echo "short_commit_sha=$(git -C mihomo rev-parse --short HEAD)" >> $GITHUB_OUTPUT
           git -C mihomo config tar.xz.command "xz -c"
@@ -64,7 +66,7 @@ jobs:
         name: Update
         run: |
           sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=1/" OpenWrt-mihomo/mihomo/Makefile
-          sed -i "s/PKG_SOURCE_DATE:=.*/PKG_SOURCE_DATE:=$(date -u -d yesterday -I)/" OpenWrt-mihomo/mihomo/Makefile
+          sed -i "s/PKG_SOURCE_DATE:=.*/PKG_SOURCE_DATE:=${{ needs.get_lastest_info.outputs.commit_date }}/" OpenWrt-mihomo/mihomo/Makefile
           sed -i "s/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:=${{ needs.get_lastest_info.outputs.commit_sha }}/" OpenWrt-mihomo/mihomo/Makefile
           sed -i "s/PKG_MIRROR_HASH:=.*/PKG_MIRROR_HASH:=${{ needs.get_lastest_info.outputs.checksum }}/" OpenWrt-mihomo/mihomo/Makefile
           sed -i "s/PKG_BUILD_VERSION:=.*/PKG_BUILD_VERSION:=alpha-${{ needs.get_lastest_info.outputs.short_commit_sha }}/" OpenWrt-mihomo/mihomo/Makefile
