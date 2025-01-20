@@ -92,6 +92,10 @@ jobs:
       - name: Uncompress
         run: |
           for file in feed_mihomo_*.tar.gz; do tar -x -z -f "$file"; done
+      
+      - name: Key
+        run: |
+          echo "${{ secrets.KEY_BUILD_PUB }}" > public/key-build.pub
 
       - name: Feed
         uses: peaceiris/actions-gh-pages@v4
