@@ -32,7 +32,7 @@ jobs:
         env:
           ARCH: ${{ matrix.arch }}-${{ matrix.tag }}
           FEEDNAME: packages_ci
-          PACKAGES: mihomo luci-app-mihomo
+          PACKAGES: nikki luci-app-nikki
           NO_REFRESH_CHECK: true
           IGNORE_ERRORS: true
 
