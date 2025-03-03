@@ -7,6 +7,11 @@ USE_PROCD=1
 . "$IPKG_INSTROOT/lib/functions/network.sh"
 . "$IPKG_INSTROOT/etc/nikki/scripts/include.sh"
 
+geoip_dat_path="$RUN_DIR/GeoIP.dat"
+geoip_v2ray_path="/usr/share/v2ray/geoip.dat"
+geosite_path="$RUN_DIR/GeoSite.dat"
+geosite_v2ray_path="/usr/share/v2ray/geosite.dat"
+
 extra_command 'update_subscription' 'Update subscription by section id'
 
 boot() {
@@ -42,6 +47,11 @@ start_service() {
 	# start
 	log "App" "Enabled."
 	log "App" "Start."
+	# support v2ray-geodata
+	[ -L "$geoip_dat_path" ] && [ ! -f "$geoip_v2ray_path" ] && rm "$geoip_dat_path"
+	[ -L "$geosite_path" ] && [ ! -f "$geosite_v2ray_path" ] && rm "$geosite_path"
+	[ ! -f "$geoip_dat_path" ] && [ -f "$geoip_v2ray_path" ] && ln -s "$geoip_v2ray_path" "$geoip_dat_path"
+	[ ! -f "$geosite_path" ] && [ -f "$geosite_v2ray_path" ] && ln -s "$geosite_v2ray_path" "$geosite_path"
 	# get config
 	## app config
 	local scheduled_restart cron_expression profile test_profile fast_reload
