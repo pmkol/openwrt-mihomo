@@ -74,7 +74,8 @@ return view.extend({
         o = s.taboption('external_control', form.Value, 'ui_name', _('UI Name'));
 
         o = s.taboption('external_control', form.Value, 'ui_url', _('UI Url'));
-        o.value('https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip', 'Zashboard');
+        o.value('https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip', 'Zashboard');
+        o.value('https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip', 'Zashboard-Full');
         o.value('https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip', 'MetaCubeXD');
         o.value('https://github.com/MetaCubeX/Yacd-meta/archive/refs/heads/gh-pages.zip', 'YACD');
         o.value('https://github.com/MetaCubeX/Razord-meta/archive/refs/heads/gh-pages.zip', 'Razord');
