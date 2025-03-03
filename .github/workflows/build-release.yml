@@ -1,0 +1,69 @@
+name: Build Packages Nikki
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'nikki/**'
+      - 'luci-app-nikki/**'
+
+jobs:
+  build:
+    name: Build ${{ matrix.arch }}-${{ matrix.tag }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - aarch64_generic
+          - x86_64
+        tag:
+          - openwrt-23.05
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build Packages
+        uses: pmkol/openwrt-gh-action-sdk@main
+        env:
+          ARCH: ${{ matrix.arch }}-${{ matrix.tag }}
+          FEEDNAME: packages_ci
+          PACKAGES: nikki luci-app-nikki
+          NO_REFRESH_CHECK: true
+          IGNORE_ERRORS: true
+
+      - name: Extract Packages SHA256
+        run: |
+          for pkg in bin/packages/${{ matrix.arch }}/packages_ci/*.ipk; do
+            sha256sum "$pkg" | awk -v filename="$(basename "$pkg")" '{ print $1, filename }' >> bin/packages/${{ matrix.arch }}/packages_ci/packages.sha256sum
+          done
+          echo "latest_release=$(date +'%Y%m%d')" >> $GITHUB_ENV
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.tag }}-${{ matrix.arch }}
+          path: bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
+
+      - name: Delete current release assets
+        uses: andreaswilli/delete-release-assets-action@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ matrix.arch }}
+          deleteOnlyFromDrafts: false
+
+      - name: Create and Upload Release
+        id: upload_release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          release_name: OpenWrt-Packages-${{ matrix.arch }}
+          tag: ${{ matrix.arch }}
+          body: Latest build on ${{env.latest_release}}
+          file_glob: true
+          overwrite: true
+          file: bin/packages/${{ matrix.arch }}/packages_ci/*.{ipk,sha256sum}
