@@ -19,6 +19,10 @@ RUN_PROFILE_PATH="$RUN_DIR/config.yaml"
 PROVIDERS_DIR="$RUN_DIR/providers"
 RULE_PROVIDERS_DIR="$PROVIDERS_DIR/rule"
 PROXY_PROVIDERS_DIR="$PROVIDERS_DIR/proxy"
+GEOIP_DAT_PATH="$RUN_DIR/GeoIP.dat"
+GEOIP_V2RAY_PATH="/usr/share/v2ray/geoip.dat"
+GEOSITE_PATH="$RUN_DIR/GeoSite.dat"
+GEOSITE_V2RAY_PATH="/usr/share/v2ray/geosite.dat"
 
 # log
 LOG_DIR="/var/log/nikki"
@@ -87,6 +91,10 @@ prepare_files() {
 	if [ ! -d "$FLAG_DIR" ]; then
 		mkdir -p "$FLAG_DIR"
 	fi
+	[ -L "$GEOIP_DAT_PATH" ] && [ ! -f "$GEOIP_V2RAY_PATH" ] && rm "$GEOIP_DAT_PATH"
+	[ -L "$GEOSITE_PATH" ] && [ ! -f "$GEOSITE_V2RAY_PATH" ] && rm "$GEOSITE_PATH"
+	[ ! -f "$GEOIP_DAT_PATH" ] && [ -f "$GEOIP_V2RAY_PATH" ] && ln -s "$GEOIP_V2RAY_PATH" "$GEOIP_DAT_PATH"
+	[ ! -f "$GEOSITE_PATH" ] && [ -f "$GEOSITE_V2RAY_PATH" ] && ln -s "$GEOSITE_V2RAY_PATH" "$GEOSITE_PATH"
 }
 
 clear_log() {
