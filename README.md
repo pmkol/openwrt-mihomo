@@ -7,7 +7,7 @@ Transparent Proxy with Mihomo on OpenWrt.
 ## Prerequisites
 
 - OpenWrt >= 23.05
-- Linux Kernel >= 5.10
+- Linux Kernel >= 5.13
 - firewall4
 
 ## Feature
