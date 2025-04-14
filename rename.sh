@@ -17,7 +17,7 @@ migrate() {
 		cp -r /etc/mihomo/. /etc/nikki
 		rm -rf /etc/mihomo
 	fi
-	service nikki restart
+	/etc/init.d/nikki restart
 }
 
 if [ -x "/bin/opkg" ]; then
