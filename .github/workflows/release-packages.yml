@@ -65,7 +65,8 @@ jobs:
           mv bin/packages/${{ matrix.arch }}/nikki public/${{ matrix.branch }}/${{ matrix.arch }}
           tar -c -z -f feed_nikki_${{ matrix.arch }}-${{ matrix.branch }}.tar.gz public/${{ matrix.branch }}/${{ matrix.arch }}
 
-      - name: release
+      - if: github.event_name == 'push' && startsWith(github.ref_name, 'v')
+        name: release
         uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -93,13 +94,15 @@ jobs:
         run: |
           for file in feed_nikki_*.tar.gz; do tar -x -z -f "$file"; done
       
-      - name: key
+      - name: prepare
         run: |
           echo "${{ secrets.KEY_BUILD_PUB }}" > public/key-build.pub
+          tree --dirsfirst --sort name -P '*.apk|*.ipk' --prune --noreport -H "" -T "Nikki's Feed" --charset utf-8 -o public/index.html public
+          sed -i '/<p class="VERSION">/,/<\/p>/d' public/index.html
 
       - name: feed
-        uses: peaceiris/actions-gh-pages@v4
+        uses: cloudflare/wrangler-action@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          force_orphan: true
-          commit_message: "release: ${{ github.ref_name }}"
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: pages deploy public --project-name=nikkinikki

@@ -12,7 +12,7 @@ Transparent Proxy with Mihomo on OpenWrt.
 
 ## Feature
 
-- Transparent Proxy (TPROXY/TUN, IPv4 and/or IPv6)
+- Transparent Proxy (Redirect/TPROXY/TUN, IPv4 and/or IPv6)
 - Access Control
 - Profile Mixin
 - Profile Editor
@@ -63,10 +63,9 @@ See [Wiki](https://github.com/nikkinikki-org/OpenWrt-nikki/wiki)
 
 1. Mixin and Update profile.
 2. Run mihomo.
-3. Run hijack prepare script.
-4. Set router hijack.
-5. Set lan hijack with access control.
-6. Set scheduled restart.
+3. Set scheduled restart.
+4. Set ip rule/route
+5. Generate nftables and apply it.
 
 Note that the steps above may change base on config.
 
@@ -82,7 +81,7 @@ echo "src-git nikki https://github.com/nikkinikki-org/OpenWrt-nikki.git;main" >>
 make package/luci-app-nikki/compile
 ```
 
-The ipk/apk file will be found under `bin/packages/your_architecture/nikki`.
+The package files will be found under `bin/packages/your_architecture/nikki`.
 
 ## Dependencies
 
