@@ -54,7 +54,7 @@ body:
     id: debug
     attributes:
       label: Debug Log / 调试日志
-      description: Download from Log -> Debug Log then upload it to here / 从 日志 -> 调试日志 下载后上传到此处
+      description: Download from Log -> Debug Log then upload it to here / 从 日志 -> 调试日志 下载后上传到此处（复制文件在此粘贴即可，请勿直接贴出内容）
     validations:
       required: true
   - type: textarea
