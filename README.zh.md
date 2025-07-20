@@ -1,40 +1,40 @@
 ![GitHub License](https://img.shields.io/github/license/nikkinikki-org/OpenWrt-nikki?style=for-the-badge&logo=github) ![GitHub Tag](https://img.shields.io/github/v/release/nikkinikki-org/OpenWrt-nikki?style=for-the-badge&logo=github) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/nikkinikki-org/OpenWrt-nikki/total?style=for-the-badge&logo=github) ![GitHub Repo stars](https://img.shields.io/github/stars/nikkinikki-org/OpenWrt-nikki?style=for-the-badge&logo=github) [![Telegram](https://img.shields.io/badge/Telegram-gray?style=for-the-badge&logo=telegram)](https://t.me/nikkinikki_org)
 
-English | [中文](README.zh.md)
+中文 | [English](README.md)
 
 # Nikki
 
-Transparent Proxy with Mihomo on OpenWrt.
+在 OpenWrt 上使用 Mihomo 进行透明代理。
 
-## Prerequisites
+## 环境要求
 
 - OpenWrt >= 23.05
 - Linux Kernel >= 5.13
 - firewall4
 
-## Feature
+## 功能
 
-- Transparent Proxy (Redirect/TPROXY/TUN, IPv4 and/or IPv6)
-- Access Control
-- Profile Mixin
-- Profile Editor
-- Scheduled Restart
+- 透明代理 (Redirect/TPROXY/TUN, IPv4 和/或 IPv6)
+- 访问控制
+- 配置文件混入
+- 配置文件编辑器
+- 定时重启
 
-## Install & Update
+## 安装和更新
 
-### A. Install From Feed (Recommended)
+### A. 从软件源安装（推荐）
 
-1. Add Feed
+1. 添加源
 
 ```shell
-# only needs to be run once
+# 只需运行一次
 wget -O - https://github.com/nikkinikki-org/OpenWrt-nikki/raw/refs/heads/main/feed.sh | ash
 ```
 
-2. Install
+2. 安装
 
 ```shell
-# you can install from shell or `Software` menu in LuCI
+# 你可以从 shell 执行命令安装或者从 LuCI 的`软件包`菜单安装
 # for opkg
 opkg install nikki
 opkg install luci-app-nikki
@@ -45,47 +45,47 @@ apk add luci-app-nikki
 apk add luci-i18n-nikki-zh-cn
 ```
 
-### B. Install From Release
+### B. 从发行版安装
 
 ```shell
 wget -O - https://github.com/nikkinikki-org/OpenWrt-nikki/raw/refs/heads/main/install.sh | ash
 ```
 
-## Uninstall & Reset
+## 卸载并重置
 
 ```shell
 wget -O - https://github.com/nikkinikki-org/OpenWrt-nikki/raw/refs/heads/main/uninstall.sh | ash
 ```
 
-## How To Use
+## 如何使用
 
-See [Wiki](https://github.com/nikkinikki-org/OpenWrt-nikki/wiki)
+查看 [Wiki](https://github.com/nikkinikki-org/OpenWrt-nikki/wiki)
 
-## How does it work
+## 如何工作
 
-1. Mixin and Update profile.
-2. Run mihomo.
-3. Set scheduled restart.
-4. Set ip rule/route
-5. Generate nftables and apply it.
+1. 混入并更新配置文件。
+2. 启动 Mihomo。
+3. 设置定时重启。
+4. 配置 IP 规则/路由。
+5. 生成防火墙配置并应用。
 
-Note that the steps above may change base on config.
+注意上述步骤可能因配置而变动。
 
-## Compilation
+## 编译
 
 ```shell
-# add feed
+# 添加源
 echo "src-git nikki https://github.com/nikkinikki-org/OpenWrt-nikki.git;main" >> "feeds.conf.default"
-# update & install feeds
+# 更新并安装源
 ./scripts/feeds update -a
 ./scripts/feeds install -a
-# make package
+# 编译
 make package/luci-app-nikki/compile
 ```
 
-The package files will be found under `bin/packages/your_architecture/nikki`.
+编译结果可以在`bin/packages/your_architecture/nikki`内找到。
 
-## Dependencies
+## 依赖
 
 - ca-bundle
 - curl
@@ -97,19 +97,19 @@ The package files will be found under `bin/packages/your_architecture/nikki`.
 - kmod-nft-tproxy
 - kmod-tun
 
-## Contributors
+## 贡献者
 
-[![Contributors](https://contrib.rocks/image?repo=nikkinikki-org/OpenWrt-nikki)](https://github.com/nikkinikki-org/OpenWrt-nikki/graphs/contributors)
+[![贡献者](https://contrib.rocks/image?repo=nikkinikki-org/OpenWrt-nikki)](https://github.com/nikkinikki-org/OpenWrt-nikki/graphs/contributors)
 
-## Special Thanks
+## 特别感谢
 
 - [@ApoisL](https://github.com/apoiston)
 - [@xishang0128](https://github.com/xishang0128)
 
-## Recommended Proxy Provider
+## 推荐机场
 
-Perfect Link is recommended
+推荐 Perfect Link
 
-All route on IEPL, All exit node at Akari, reliable and easy to use
+路线全 IEPL、落地全 Akari 的机场，靠谱好用
 
-[Official Website](https://perfectlink.io) | [Customer Service](https://t.me/PerfectlinksupportBot)
+[官网](https://perfectlink.io) | [客服](https://t.me/PerfectlinksupportBot)
