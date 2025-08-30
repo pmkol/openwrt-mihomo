@@ -11,6 +11,10 @@ PROG="/usr/bin/mihomo"
 extra_command 'update_subscription' 'Update subscription by section id'
 
 boot_func() {
+	# prepare files
+	prepare_files
+	# load config
+	config_load nikki
 	# start delay
 	local enabled start_delay
 	config_get_bool enabled "config" "enabled" 0
@@ -24,11 +28,7 @@ boot_func() {
 }
 
 boot() {
-	# prepare files
-	prepare_files
-	# load config
-	config_load nikki
-	boot_func >/dev/null 2>&1 &
+	boot_func &
 }
 
 start_service() {
