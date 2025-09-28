@@ -7,7 +7,7 @@ on:
 
 jobs:
   sync:
-    if: github.repository_owner == 'pmkol'
+    if: github.repository_owner == 'pmkol' || github.repository_owner == 'apadpro'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
