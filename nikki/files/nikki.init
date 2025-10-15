@@ -290,7 +290,7 @@ service_started() {
 		if [ "$tun_enable" = 1 ]; then
 			log "Proxy" "Waiting for tun device online within $tun_timeout seconds..."
 			while [ "$tun_timeout" -gt 0 ]; do
-				if ip -j link show dev "$tun_device" | jsonfilter -q -e "@[@['flags'][@='UP']]" > /dev/null 2>&1; then
+				if ip -j link show dev "$tun_device" 2>/dev/null | jsonfilter -q -e "@[@['flags'][@='UP']]"; then
 					log "Proxy" "TUN device is online."
 					break
 				fi
