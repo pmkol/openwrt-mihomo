@@ -47,6 +47,12 @@ start_service() {
 	# start
 	log "App" "Enabled."
 	log "App" "Start."
+	# check if executable
+	if [ ! -x $PROG ]; then
+		log "App" "Core is not executable."
+		log "App" "Exit."
+		return
+	fi
 	# get config
 	## app config
 	local scheduled_restart cron_expression profile test_profile fast_reload core_only
